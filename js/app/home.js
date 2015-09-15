@@ -22,7 +22,6 @@ var slip = require('../lib/slip');
 			var oUl = oBigBanner.querySelector('ul');
 			var aLi = oBigBanner.querySelectorAll('li');
 			$width = document.body.clientWidth;
-
 			for(var i =0;i< aLi.length;i++) {
 				aLi[i].style.width = $width + 'px';
 			}
@@ -31,7 +30,6 @@ var slip = require('../lib/slip');
 			return $width;
 		}
 		iLiWidth = setWidth();
-
 		$(window).resize(function() {
 			iLiWidth = setWidth();
 		});
@@ -73,12 +71,56 @@ var slip = require('../lib/slip');
 				endFun: fnEnd
 			});
 		}
-	}
+	};
 
 	if($("#bigGlide").length > 0) {
 		bigChangeImg();
 	};
 
+
+	if($("#scrollList").length == 0) return;
+	var scrollSlip = {
+		init : function() {
+			var oPreviewImg;
+
+			var scrollList = $("#scrollList"),
+			    items = scrollList.find(".items"),
+				len = items.length;
+			var _width,nums;
+
+			function setScrollWidth() {
+				var $width = document.body.clientWidth;
+				nums = parseInt($width / 3);
+				items.css({
+					width : nums + "px" ,
+				});
+				var marginLeft = len * 10;
+				// var marginLeft = 0;
+				_width = nums * len + marginLeft;
+				scrollList.css({
+					// height : items.eq(0).height(),
+					width :  _width + 'px',
+				});
+			}
+
+			setScrollWidth();
+
+			var slipbox = document.getElementById("scrollList");
+			oPreviewImg = slip('px',slipbox,{
+				direction: "x",
+				num: len,
+			});
+
+			$(window).resize(function() {
+				setScrollWidth();
+				oPreviewImg.refresh();
+				location.reload();
+			});
+
+		}
+	};
+
+	scrollSlip.init();
 
 	var shareBtn = $("#shareBtn");
 	var shareBox = $("#shareBox");
@@ -88,6 +130,6 @@ var slip = require('../lib/slip');
 		} else {
 			shareBox.hide();
 		}
-	})
+	});
 
 })
